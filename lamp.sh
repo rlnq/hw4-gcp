@@ -1,31 +1,33 @@
 #!/bin/bash
 
- #root password for MySQL
- read -p 'db_root_password [secretpasswd]: ' db_root_password
- echo
+sudo -i
 
- #update system
- sudo apt-get update -y
+#root password for MySQL
+read -p 'db_root_password [secretpasswd]: ' db_root_password
+echo
 
- #install APache, PHP and MySQL
- sudo apt-get install apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1 ssl-cert -y
+#update system
+sudo apt-get update -y
 
- apt-get install php libapache2-mod-php php-mysql -y
+#install APache, PHP and MySQL
+sudo apt-get install apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1 ssl-cert -y
 
- export DEBIAN_FRONTEND="noninteractive"
- debconf-set-selections <<< "mysql-server mysql-server/root_password password $db_root_password"
- debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $db_root_password"
- apt-get install mysql-server -y
+apt-get install php libapache2-mod-php php-mysql -y
 
- sudo a2enmod rewrite
- sudo php5enmod mcrypt
+export DEBIAN_FRONTEND="noninteractive"
+debconf-set-selections <<< "mysql-server mysql-server/root_password password $db_root_password"
+debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $db_root_password"
+apt-get install mysql-server -y
 
- #install and configure PhpMyAdmin 
- sudo apt-get install phpmyadmin -y
+sudo a2enmod rewrite
+sudo php5enmod mcrypt
 
- echo 'Include /etc/phpmyadmin/apache.conf' >> /etc/apache2/apache2.conf
+#install and configure PhpMyAdmin 
+sudo apt-get install phpmyadmin -y
 
- sudo chown -R www-data:www-data /var/www
+echo 'Include /etc/phpmyadmin/apache.conf' >> /etc/apache2/apache2.conf
 
- #restart Apache
- sudo service apache2 restart
+sudo chown -R www-data:www-data /var/www
+
+#restart Apache
+sudo service apache2 restart
